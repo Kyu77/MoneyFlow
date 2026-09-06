@@ -7,9 +7,34 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
+    public function accounts(): HasMany
+    {
+    return $this->hasMany(Account::class);
+    }
+
+    public function categories(): HasMany
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    public function recurringTransactions(): HasMany
+    {
+        return $this->hasMany(RecurringTransaction::class);
+    }
+
+    public function plannedTransactions(): HasMany
+    {
+        return $this->hasMany(PlannedTransaction::class);
+    }
+
+    public function savingsGoals(): HasMany
+    {
+        return $this->hasMany(SavingsGoal::class);
+    }
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
