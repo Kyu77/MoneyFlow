@@ -13,8 +13,14 @@ class Category extends Model
         'name',
         'type',
         'icon',
+        'is_default',
     ];
 
+    protected $casts = [
+        'is_default' => 'boolean',
+    ];
+
+    
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
