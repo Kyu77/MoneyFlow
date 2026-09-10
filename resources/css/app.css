@@ -1,3 +1,205 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/*
+|--------------------------------------------------------------------------
+| MoneyFlow — Design System
+|--------------------------------------------------------------------------
+*/
+
+@layer base {
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply antialiased;
+    }
+
+    /*
+    |----------------------------------------------------------------------
+    | Sélection de texte
+    |----------------------------------------------------------------------
+    */
+
+    ::selection {
+        @apply bg-indigo-500 text-white;
+    }
+
+    /*
+    |----------------------------------------------------------------------
+    | Barre de défilement
+    |----------------------------------------------------------------------
+    */
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-gray-100 dark:bg-gray-900;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-400 dark:bg-gray-600;
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Composants MoneyFlow
+|--------------------------------------------------------------------------
+*/
+
+@layer components {
+
+    /*
+    |----------------------------------------------------------------------
+    | Carte principale
+    |----------------------------------------------------------------------
+    */
+
+    .mf-card {
+        @apply bg-white dark:bg-gray-800
+               border border-gray-100 dark:border-gray-700
+               rounded-2xl
+               shadow-sm
+               transition-all duration-200;
+    }
+
+    .mf-card-hover {
+        @apply hover:shadow-md
+               hover:-translate-y-0.5;
+    }
+
+
+    /*
+    |----------------------------------------------------------------------
+    | Bouton principal
+    |----------------------------------------------------------------------
+    */
+
+    .mf-button {
+        @apply inline-flex
+               items-center
+               justify-center
+               gap-2
+               min-h-[52px]
+               px-5
+               rounded-2xl
+               bg-gray-950
+               dark:bg-white
+               text-white
+               dark:text-gray-950
+               font-semibold
+               transition-all
+               duration-200
+               active:scale-[0.98]
+               hover:bg-gray-800
+               dark:hover:bg-gray-100;
+    }
+
+
+    /*
+    |----------------------------------------------------------------------
+    | Bouton accent MoneyFlow
+    |----------------------------------------------------------------------
+    */
+
+    .mf-button-primary {
+        @apply inline-flex
+               items-center
+               justify-center
+               gap-2
+               min-h-[52px]
+               px-5
+               rounded-2xl
+               bg-indigo-600
+               hover:bg-indigo-700
+               text-white
+               font-semibold
+               shadow-sm
+               shadow-indigo-500/20
+               transition-all
+               duration-200
+               active:scale-[0.98];
+    }
+
+
+    /*
+    |----------------------------------------------------------------------
+    | Petit badge
+    |----------------------------------------------------------------------
+    */
+
+    .mf-badge {
+        @apply inline-flex
+               items-center
+               gap-1.5
+               px-2.5
+               py-1
+               rounded-full
+               text-xs
+               font-semibold;
+    }
+
+
+    /*
+    |----------------------------------------------------------------------
+    | Champ de formulaire
+    |----------------------------------------------------------------------
+    */
+
+    .mf-input {
+        @apply w-full
+               min-h-[52px]
+               rounded-2xl
+               border-gray-200
+               dark:border-gray-700
+               bg-white
+               dark:bg-gray-800
+               text-gray-900
+               dark:text-white
+               placeholder-gray-400
+               focus:border-indigo-500
+               focus:ring-indigo-500;
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Animations MoneyFlow
+|--------------------------------------------------------------------------
+*/
+
+@keyframes mf-fade-in {
+
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+@layer utilities {
+
+    .mf-fade-in {
+        animation: mf-fade-in 0.35s ease-out both;
+    }
+
+}

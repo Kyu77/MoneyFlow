@@ -1,335 +1,565 @@
 <x-app-layout>
 
+    {{-- ========================================================= --}}
+    {{-- HEADER DESKTOP                                           --}}
+    {{-- ========================================================= --}}
+
     <x-slot name="header">
 
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            MoneyFlow
-        </h2>
+        <div class="hidden sm:flex items-center justify-between">
 
-    </x-slot>
+            <div>
 
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Ton espace financier
+                </p>
 
-    <div class="py-6">
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-
-            {{-- ===================================================== --}}
-            {{-- BIENVENUE --}}
-            {{-- ===================================================== --}}
-
-            <div class="mb-8">
-
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-
-                <div>
-
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-                         Bonjour {{ auth()->user()->name }} 👋
-                    </h1>
-
-                     <p class="mt-2 text-gray-500 dark:text-gray-400">
-                         Voici l'essentiel de tes finances.
-                    </p>
-
-             </div>
-
-
-        {{-- Ajouter une transaction --}}
-        <a
-            href="{{ route('transactions.create') }}"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-2xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold shadow-lg hover:bg-gray-800 dark:hover:bg-gray-100 active:scale-[0.98] transition"
-        >
-
-            <span class="text-xl">
-                +
-            </span>
-
-            <span>
-                Ajouter une transaction
-            </span>
-
-        </a>
-
-    </div>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+                    Dashboard
+                </h2>
 
             </div>
 
 
-            {{-- ===================================================== --}}
-            {{-- VUE GLOBALE --}}
-            {{-- ===================================================== --}}
+            <a
+                href="{{ route('transactions.create') }}"
+                class="mf-button-primary"
+            >
+                <span class="text-lg">
+                    +
+                </span>
 
-            @if ($accounts->isNotEmpty())
+                Ajouter une transaction
+            </a>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        </div>
 
-
-                    {{-- Solde réel --}}
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
-
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Solde réel
-                        </p>
-
-                        <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">
-                            {{ number_format($totalRealBalance, 2, ',', ' ') }} €
-                        </p>
-
-                        <p class="text-xs text-gray-500 mt-1">
-                            Sur tous tes comptes
-                        </p>
-
-                    </div>
+    </x-slot>
 
 
-                    {{-- Dépenses --}}
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+    {{-- ========================================================= --}}
+    {{-- CONTENU                                                   --}}
+    {{-- ========================================================= --}}
 
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Dépenses ce mois
-                        </p>
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
 
-                        <p class="text-2xl font-bold text-red-600 mt-2">
-                            -{{ number_format($totalMonthlyExpenses, 2, ',', ' ') }} €
-                        </p>
-
-                        <p class="text-xs text-gray-500 mt-1">
-                            Dépenses réellement passées
-                        </p>
-
-                    </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
 
 
-                    {{-- À venir --}}
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+            {{-- ================================================= --}}
+            {{-- HEADER MOBILE                                      --}}
+            {{-- ================================================= --}}
 
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            À venir
-                        </p>
+            <div class="sm:hidden mb-6 mf-fade-in">
 
-                        <div class="mt-2 space-y-1">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Bonjour {{ auth()->user()->name }} 👋
+                </p>
 
-                            <p class="text-sm font-semibold text-green-600">
-                                +{{ number_format($totalUpcomingIncome, 2, ',', ' ') }} €
-                            </p>
+                <div class="flex items-center justify-between mt-1">
 
-                            <p class="text-sm font-semibold text-red-600">
-                                -{{ number_format($totalUpcomingExpenses, 2, ',', ' ') }} €
+                    <h1 class="text-2xl font-bold tracking-tight text-gray-950 dark:text-white">
+                        Tes finances
+                    </h1>
+
+
+                    <a
+                        href="{{ route('transactions.create') }}"
+                        class="w-11 h-11 rounded-2xl bg-gray-950 dark:bg-white text-white dark:text-gray-950 flex items-center justify-center shadow-lg active:scale-95 transition"
+                        aria-label="Ajouter une transaction"
+                    >
+                        <span class="text-2xl font-light">
+                            +
+                        </span>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            {{-- ================================================= --}}
+            {{-- SOLDE DISPONIBLE                                   --}}
+            {{-- ================================================= --}}
+
+            <section class="mf-fade-in">
+
+                <div class="relative overflow-hidden rounded-[2rem] bg-gray-950 dark:bg-white text-white dark:text-gray-950 p-6 sm:p-8 shadow-xl">
+
+
+                    {{-- Décoration légère --}}
+
+                    <div
+                        class="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-indigo-500/20 blur-3xl"
+                    ></div>
+
+                    <div
+                        class="absolute -left-20 -bottom-20 w-48 h-48 rounded-full bg-indigo-500/10 blur-3xl"
+                    ></div>
+
+
+                    <div class="relative">
+
+
+                        {{-- Titre --}}
+
+                        <div class="flex items-center justify-between">
+
+                            <div>
+
+                                <p class="text-sm text-gray-400 dark:text-gray-500">
+                                    Solde disponible maintenant
+                                </p>
+
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    Argent réellement disponible
+                                </p>
+
+                            </div>
+
+
+                            <div class="w-10 h-10 rounded-xl bg-white/10 dark:bg-gray-950/10 flex items-center justify-center">
+                                💳
+                            </div>
+
+                        </div>
+
+
+                        {{-- Montant --}}
+
+                        <div class="mt-5">
+
+                            <p class="text-4xl sm:text-5xl font-bold tracking-tight">
+
+                                {{ number_format(
+                                    $totalRealBalance,
+                                    2,
+                                    ',',
+                                    ' '
+                                ) }}
+
+                                <span class="text-2xl sm:text-3xl font-medium opacity-50">
+                                    €
+                                </span>
+
                             </p>
 
                         </div>
 
-                        <p class="text-xs text-gray-500 mt-1">
-                            Mouvements prévus
-                        </p>
+
+                        {{-- À venir --}}
+
+                        <div class="mt-7 grid grid-cols-2 gap-3">
+
+
+                            {{-- Revenus à venir --}}
+
+                            <div class="rounded-2xl bg-white/10 dark:bg-gray-950/10 p-4">
+
+                                <p class="text-xs text-gray-400 dark:text-gray-500">
+                                    Revenus à venir
+                                </p>
+
+                                <p class="text-lg font-bold text-green-400 dark:text-green-600 mt-1">
+
+                                    +{{ number_format(
+                                        $totalUpcomingIncome,
+                                        2,
+                                        ',',
+                                        ' '
+                                    ) }}
+
+                                    €
+
+                                </p>
+
+                            </div>
+
+
+                            {{-- Dépenses à venir --}}
+
+                            <div class="rounded-2xl bg-white/10 dark:bg-gray-950/10 p-4">
+
+                                <p class="text-xs text-gray-400 dark:text-gray-500">
+                                    Dépenses à venir
+                                </p>
+
+                                <p class="text-lg font-bold text-red-400 dark:text-red-600 mt-1">
+
+                                    -{{ number_format(
+                                        $totalUpcomingExpenses,
+                                        2,
+                                        ',',
+                                        ' '
+                                    ) }}
+
+                                    €
+
+                                </p>
+
+                            </div>
+
+                        </div>
 
                     </div>
-
-
-                    {{-- Prévision --}}
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
-
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Prévu fin du mois
-                        </p>
-
-                        <p
-                            class="text-2xl font-bold mt-2
-                                {{ $totalForecastBalance >= $totalRealBalance
-                                    ? 'text-green-600'
-                                    : 'text-red-600' }}"
-                        >
-                            {{ number_format($totalForecastBalance, 2, ',', ' ') }} €
-                        </p>
-
-                        <p class="text-xs text-gray-500 mt-1">
-                            Avec les mouvements à venir
-                        </p>
-
-                    </div>
-
 
                 </div>
 
-            @endif
+            </section>
 
 
-            {{-- ===================================================== --}}
-            {{-- COMPTES --}}
-            {{-- ===================================================== --}}
+            {{-- ================================================= --}}
+            {{-- PRÉVISION FIN DU MOIS                              --}}
+            {{-- ================================================= --}}
 
-            <div class="mb-8">
+            <section class="mt-4 mf-fade-in">
 
-                <div class="flex justify-between items-center mb-4">
+                <div class="mf-card p-5 sm:p-6">
 
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                        Mes comptes
+
+                    <div class="flex items-start gap-3">
+
+                        <div class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center shrink-0">
+                            📅
+                        </div>
+
+
+                        <div>
+
+                            <h2 class="font-bold text-gray-900 dark:text-white">
+                                Prévision fin du mois
+                            </h2>
+
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                Estimation basée sur les mouvements récurrents à venir.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    @php
+                        $forecastDifference =
+                            $totalForecastBalance - $totalRealBalance;
+                    @endphp
+
+
+                    <div class="mt-5 flex items-end justify-between gap-4">
+
+
+                        <div>
+
+                            <p class="text-3xl font-bold tracking-tight text-gray-950 dark:text-white">
+
+                                {{ number_format(
+                                    $totalForecastBalance,
+                                    2,
+                                    ',',
+                                    ' '
+                                ) }}
+
+                                €
+
+                            </p>
+
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                Solde estimé
+                            </p>
+
+                        </div>
+
+
+                        <span
+                            class="mf-badge
+                                {{ $forecastDifference >= 0
+                                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
+                                    : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' }}"
+                        >
+
+                            {{ $forecastDifference >= 0 ? '+' : '' }}
+
+                            {{ number_format(
+                                $forecastDifference,
+                                2,
+                                ',',
+                                ' '
+                            ) }}
+
+                            €
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            {{-- ================================================= --}}
+            {{-- ACTIVITÉ DU MOIS                                   --}}
+            {{-- ================================================= --}}
+
+            <section class="mt-8">
+
+
+                <div class="mb-4">
+
+                    <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                        Activité
+                    </p>
+
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-1">
+                        Ce mois
                     </h2>
+
+                </div>
+
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+
+
+                    {{-- Revenus réels --}}
+
+                    <div class="mf-card p-4 sm:p-5">
+
+                        <div class="flex items-center justify-between">
+
+                            <span class="w-9 h-9 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-lg">
+                                ↗
+                            </span>
+
+                            <span class="text-xs font-medium text-gray-400">
+                                Revenus
+                            </span>
+
+                        </div>
+
+
+                        <p class="text-xl sm:text-2xl font-bold text-gray-950 dark:text-white mt-4">
+
+                            +{{ number_format(
+                                $totalMonthlyIncome,
+                                2,
+                                ',',
+                                ' '
+                            ) }}
+
+                            €
+
+                        </p>
+
+
+                        <p class="text-xs text-gray-400 mt-1">
+                            Réellement encaissés
+                        </p>
+
+                    </div>
+
+
+                    {{-- Dépenses réelles --}}
+
+                    <div class="mf-card p-4 sm:p-5">
+
+                        <div class="flex items-center justify-between">
+
+                            <span class="w-9 h-9 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-lg">
+                                ↘
+                            </span>
+
+                            <span class="text-xs font-medium text-gray-400">
+                                Dépenses
+                            </span>
+
+                        </div>
+
+
+                        <p class="text-xl sm:text-2xl font-bold text-gray-950 dark:text-white mt-4">
+
+                            -{{ number_format(
+                                $totalMonthlyExpenses,
+                                2,
+                                ',',
+                                ' '
+                            ) }}
+
+                            €
+
+                        </p>
+
+
+                        <p class="text-xs text-gray-400 mt-1">
+                            Réellement dépensés
+                        </p>
+
+                    </div>
+
+
+                    {{-- Net du mois --}}
+
+                    @php
+                        $monthlyNet =
+                            $totalMonthlyIncome
+                            - $totalMonthlyExpenses;
+                    @endphp
+
+
+                    <div class="mf-card p-4 sm:p-5 col-span-2 sm:col-span-1">
+
+                        <div class="flex items-center justify-between">
+
+                            <span class="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-lg">
+                                ✦
+                            </span>
+
+                            <span class="text-xs font-medium text-gray-400">
+                                Variation
+                            </span>
+
+                        </div>
+
+
+                        <p
+                            class="text-xl sm:text-2xl font-bold mt-4
+                                {{ $monthlyNet >= 0
+                                    ? 'text-green-600 dark:text-green-400'
+                                    : 'text-red-600 dark:text-red-400' }}"
+                        >
+
+                            {{ $monthlyNet >= 0 ? '+' : '' }}
+
+                            {{ number_format(
+                                $monthlyNet,
+                                2,
+                                ',',
+                                ' '
+                            ) }}
+
+                            €
+
+                        </p>
+
+
+                        <p class="text-xs text-gray-400 mt-1">
+                            Revenus − dépenses
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            {{-- ================================================= --}}
+            {{-- COMPTES                                             --}}
+            {{-- ================================================= --}}
+
+            <section class="mt-8">
+
+
+                <div class="flex items-end justify-between mb-4">
+
+                    <div>
+
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                            Ton argent
+                        </p>
+
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-1">
+                            Mes comptes
+                        </h2>
+
+                    </div>
+
 
                     <a
                         href="{{ route('accounts.index') }}"
-                        class="text-sm text-blue-600 hover:underline"
+                        class="text-sm font-semibold text-indigo-600 dark:text-indigo-400"
                     >
-                        Voir le détail →
+                        Voir tout
                     </a>
 
                 </div>
 
 
-                @if ($accounts->isEmpty())
+                @if ($accountForecasts->isEmpty())
 
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+                    <div class="mf-card p-7 text-center">
 
-                        <p class="text-gray-600 dark:text-gray-300">
-                            Tu n'as encore aucun compte.
+                        <div class="w-14 h-14 mx-auto rounded-2xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-2xl">
+                            💳
+                        </div>
+
+
+                        <h3 class="font-bold text-gray-900 dark:text-white mt-4">
+                            Aucun compte
+                        </h3>
+
+
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            Commence par ajouter ton premier compte.
                         </p>
+
 
                         <a
                             href="{{ route('accounts.create') }}"
-                            class="inline-block mt-4 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
+                            class="mf-button-primary mt-5"
                         >
-                            + Ajouter mon premier compte
+                            Ajouter un compte
                         </a>
 
                     </div>
 
                 @else
 
-                    <div class="grid gap-4 md:grid-cols-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
 
-                        @foreach ($accountForecasts as $accountData)
+                        @foreach ($accountForecasts as $data)
 
                             @php
-                                $account = $accountData['account'];
 
-                                $realBalance = $accountData['real_balance'];
+                                $account = $data['account'];
 
-                                $forecast = $accountData['forecast_balance'];
+                                $accountTypeLabel = match ($account->type) {
 
-                                $upcomingIncome = $accountData['upcoming_income'];
+                                    'current' => 'Compte courant',
 
-                                $upcomingExpenses = $accountData['upcoming_expenses'];
+                                    'savings' => 'Épargne',
 
-                                $difference = $forecast - $realBalance;
+                                    'joint' => 'Compte joint',
+
+                                    default => 'Autre compte',
+
+                                };
+
                             @endphp
 
 
-                            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+                            <a
+                                href="{{ route('accounts.show', $account) }}"
+                                class="mf-card mf-card-hover p-5 block"
+                            >
 
 
-                                {{-- Header --}}
-                                <div class="flex justify-between items-start">
+                                <div class="flex items-start justify-between">
 
-                                    <div>
+                                    <div class="flex items-center gap-3">
 
-                                        <div class="flex items-center gap-2">
-
-                                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                {{ $account->name }}
-                                            </h3>
-
-                                            @if ($account->is_shared)
-
-                                                <span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-                                                    Partagé
-                                                </span>
-
-                                            @endif
-
+                                        <div class="w-11 h-11 rounded-2xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                                            💳
                                         </div>
 
-                                        <p class="text-sm text-gray-500 mt-1">
-                                            {{ match ($account->type) {
-                                                'current' => 'Compte courant',
-                                                'savings' => 'Épargne',
-                                                'joint' => 'Compte joint',
-                                                default => 'Autre compte',
-                                            } }}
-                                        </p>
-
-                                    </div>
-
-
-                                    <a
-                                        href="{{ route('accounts.transactions.index', $account) }}"
-                                        class="text-sm text-blue-600 hover:underline"
-                                    >
-                                        Détails →
-                                    </a>
-
-                                </div>
-
-
-                                {{-- Solde --}}
-                                <div class="mt-5">
-
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        Solde réel
-                                    </p>
-
-                                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-1">
-                                        {{ number_format($realBalance, 2, ',', ' ') }} €
-                                    </p>
-
-                                </div>
-
-
-                                {{-- À venir --}}
-                                <div class="mt-5 pt-5 border-t border-gray-200 dark:border-gray-700">
-
-                                    <div class="flex justify-between items-center">
 
                                         <div>
 
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                À venir
+                                            <p class="font-semibold text-gray-900 dark:text-white">
+                                                {{ $account->name }}
                                             </p>
 
-                                            <div class="flex gap-3 mt-1">
-
-                                                @if ($upcomingIncome > 0)
-
-                                                    <span class="text-sm font-semibold text-green-600">
-                                                        +{{ number_format($upcomingIncome, 2, ',', ' ') }} €
-                                                    </span>
-
-                                                @endif
-
-                                                @if ($upcomingExpenses > 0)
-
-                                                    <span class="text-sm font-semibold text-red-600">
-                                                        -{{ number_format($upcomingExpenses, 2, ',', ' ') }} €
-                                                    </span>
-
-                                                @endif
-
-                                                @if ($upcomingIncome == 0 && $upcomingExpenses == 0)
-
-                                                    <span class="text-sm text-gray-500">
-                                                        Aucun mouvement
-                                                    </span>
-
-                                                @endif
-
-                                            </div>
-
-                                        </div>
-
-
-                                        <div class="text-right">
-
-                                            <p class="text-xs text-gray-500">
-                                                Fin du mois
-                                            </p>
-
-                                            <p
-                                                class="text-lg font-bold
-                                                    {{ $forecast >= $realBalance
-                                                        ? 'text-green-600'
-                                                        : 'text-red-600' }}"
-                                            >
-                                                {{ number_format($forecast, 2, ',', ' ') }} €
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                                {{ $accountTypeLabel }}
                                             </p>
 
                                         </div>
@@ -337,30 +567,63 @@
                                     </div>
 
 
-                                    @if ($difference != 0)
-
-                                        <p class="text-xs text-gray-500 mt-3">
-
-                                            @if ($difference > 0)
-
-                                                +{{ number_format($difference, 2, ',', ' ') }} €
-                                                de variation prévue
-
-                                            @else
-
-                                                {{ number_format(abs($difference), 2, ',', ' ') }} €
-                                                de variation prévue
-
-                                            @endif
-
-                                        </p>
-
-                                    @endif
+                                    <span class="text-gray-300 dark:text-gray-600">
+                                        →
+                                    </span>
 
                                 </div>
 
 
-                            </div>
+                                <div class="mt-6">
+
+                                    <p class="text-2xl font-bold text-gray-950 dark:text-white">
+
+                                        {{ number_format(
+                                            $data['real_balance'],
+                                            2,
+                                            ',',
+                                            ' '
+                                        ) }}
+
+                                        €
+
+                                    </p>
+
+
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        Disponible maintenant
+                                    </p>
+
+                                </div>
+
+
+                                <div class="mt-5 pt-4 border-t border-gray-100 dark:border-gray-700">
+
+                                    <div class="flex items-center justify-between text-xs">
+
+                                        <span class="text-gray-500 dark:text-gray-400">
+                                            Prévu fin du mois
+                                        </span>
+
+
+                                        <span class="font-semibold text-gray-900 dark:text-white">
+
+                                            {{ number_format(
+                                                $data['forecast_balance'],
+                                                2,
+                                                ',',
+                                                ' '
+                                            ) }}
+
+                                            €
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
 
                         @endforeach
 
@@ -368,35 +631,36 @@
 
                 @endif
 
-            </div>
+            </section>
 
 
-            {{-- ===================================================== --}}
-            {{-- OBJECTIFS D'ÉPARGNE --}}
-            {{-- ===================================================== --}}
+            {{-- ================================================= --}}
+            {{-- OBJECTIFS                                           --}}
+            {{-- ================================================= --}}
 
-            <div class="mb-8">
+            <section class="mt-8">
 
-                <div class="flex justify-between items-center mb-4">
+
+                <div class="flex items-end justify-between mb-4">
 
                     <div>
 
-                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                            Mes objectifs 🎯
-                        </h2>
-
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            Suis rapidement ta progression.
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                            Projets
                         </p>
+
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-1">
+                            Mes objectifs
+                        </h2>
 
                     </div>
 
 
                     <a
                         href="{{ route('savings-goals.index') }}"
-                        class="text-sm text-blue-600 hover:underline"
+                        class="text-sm font-semibold text-indigo-600 dark:text-indigo-400"
                     >
-                        Voir tous les objectifs →
+                        Voir tout
                     </a>
 
                 </div>
@@ -404,138 +668,154 @@
 
                 @if ($savingsGoals->isEmpty())
 
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+                    <div class="mf-card p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
 
-                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+                        <div class="flex items-center gap-4">
+
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-xl">
+                                🎯
+                            </div>
+
 
                             <div>
 
-                                <p class="font-medium text-gray-900 dark:text-white">
-                                    Aucun objectif en cours
-                                </p>
+                                <h3 class="font-bold text-gray-900 dark:text-white">
+                                    Aucun objectif pour le moment
+                                </h3>
 
-                                <p class="text-sm text-gray-500 mt-1">
-                                    Crée un objectif pour suivre ton épargne.
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                    Donne-toi un objectif et suis sa progression.
                                 </p>
 
                             </div>
 
-
-                            <a
-                                href="{{ route('savings-goals.create') }}"
-                                class="inline-block px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 text-sm"
-                            >
-                                + Créer un objectif
-                            </a>
-
                         </div>
+
+
+                        <a
+                            href="{{ route('savings-goals.create') }}"
+                            class="mf-button-primary shrink-0"
+                        >
+                            Créer un objectif
+                        </a>
 
                     </div>
 
                 @else
 
-                    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 
-
-                        @foreach ($savingsGoals as $goalData)
+                        @foreach ($savingsGoals as $data)
 
                             @php
-                                $goal = $goalData['goal'];
 
-                                $percentage = $goalData['percentage'];
+                                $percentage = $data['percentage'];
 
-                                $currentAmount = $goalData['current_amount'];
+                                $current = $data['current_amount'];
 
-                                $targetAmount = $goalData['target_amount'];
+                                $target = $data['target_amount'];
+
                             @endphp
 
 
                             <a
-                                href="{{ route('savings-goals.edit', $goal) }}"
-                                class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 hover:shadow-md transition"
+                                href="{{ route('savings-goals.edit', $data['goal']) }}"
+                                class="mf-card mf-card-hover p-5 block"
                             >
 
-                                <div class="flex items-center gap-5">
+
+                                <div class="flex items-center justify-between gap-3">
 
 
-                                    {{-- Donut --}}
-                                    <div
-                                        class="relative w-28 h-28 rounded-full shrink-0"
-                                        style="
-                                            background:
-                                                conic-gradient(
-                                                    #22c55e {{ $percentage }}%,
-                                                    #e5e7eb {{ $percentage }}% 100%
-                                                );
-                                        "
-                                    >
+                                    <div class="flex items-center gap-3 min-w-0">
 
-                                        <div class="absolute inset-3 bg-white dark:bg-gray-800 rounded-full flex flex-col items-center justify-center">
+                                        <div class="w-11 h-11 rounded-2xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center shrink-0">
+                                            🎯
+                                        </div>
 
-                                            <span class="text-xl font-bold text-gray-900 dark:text-white">
-                                                {{ $percentage }}%
-                                            </span>
 
-                                            <span class="text-[10px] text-gray-500">
-                                                atteint
-                                            </span>
+                                        <div class="min-w-0">
+
+                                            <p class="font-semibold text-gray-900 dark:text-white truncate">
+                                                {{ $data['goal']->name }}
+                                            </p>
+
+
+                                            @if ($data['goal']->target_date)
+
+                                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+
+                                                    Objectif :
+                                                    {{ $data['goal']->target_date->format('d/m/Y') }}
+
+                                                </p>
+
+                                            @else
+
+                                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                                    Sans date limite
+                                                </p>
+
+                                            @endif
 
                                         </div>
 
                                     </div>
 
 
-                                    {{-- Infos --}}
-                                    <div class="min-w-0">
-
-                                        <h3 class="font-semibold text-gray-900 dark:text-white truncate">
-                                            {{ $goal->name }}
-                                        </h3>
-
-
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-
-                                            {{ number_format($currentAmount, 2, ',', ' ') }}
-                                            €
-                                            /
-                                            {{ number_format($targetAmount, 2, ',', ' ') }}
-                                            €
-
-                                        </p>
-
-
-                                        @if ($goal->target_date)
-
-                                            <p class="text-xs text-gray-500 mt-2">
-
-                                                Objectif :
-                                                {{ $goal->target_date->format('d/m/Y') }}
-
-                                            </p>
-
-                                        @endif
-
-
-                                    </div>
-
+                                    <span class="text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                                        {{ $percentage }}%
+                                    </span>
 
                                 </div>
 
 
-                                {{-- Barre de progression --}}
                                 <div class="mt-5">
 
-                                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+
+                                    <div class="flex justify-between text-xs mb-2">
+
+                                        <span class="text-gray-500 dark:text-gray-400">
+
+                                            {{ number_format(
+                                                $current,
+                                                0,
+                                                ',',
+                                                ' '
+                                            ) }}
+
+                                            €
+
+                                        </span>
+
+
+                                        <span class="text-gray-400">
+
+                                            {{ number_format(
+                                                $target,
+                                                0,
+                                                ',',
+                                                ' '
+                                            ) }}
+
+                                            €
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="h-2 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
 
                                         <div
-                                            class="h-full bg-green-500 rounded-full"
-                                            style="width: {{ $percentage }}%;"
+                                            class="h-full rounded-full bg-indigo-600 transition-all duration-500"
+                                            style="width: {{ $percentage }}%"
                                         ></div>
 
                                     </div>
 
                                 </div>
-
 
                             </a>
 
@@ -545,111 +825,102 @@
 
                 @endif
 
-            </div>
+            </section>
 
 
-            {{-- ===================================================== --}}
-            {{-- ACTIONS RAPIDES --}}
-            {{-- ===================================================== --}}
+            {{-- ================================================= --}}
+            {{-- ACTIONS RAPIDES                                    --}}
+            {{-- ================================================= --}}
 
-            <div>
+            <section class="mt-8 pb-4">
 
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
                     Actions rapides
-                </h2>
+                </p>
 
 
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
 
 
-                    {{-- Comptes --}}
+                    {{-- Transaction --}}
+
                     <a
-                        href="{{ route('accounts.index') }}"
-                        class="bg-white dark:bg-gray-800 rounded-xl shadow p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                        href="{{ route('transactions.create') }}"
+                        class="mf-card mf-card-hover p-4 text-center"
                     >
 
-                        <p class="font-semibold text-gray-900 dark:text-white">
-                            💳 Comptes
-                        </p>
+                        <div class="w-10 h-10 mx-auto rounded-xl bg-gray-950 dark:bg-white text-white dark:text-gray-950 flex items-center justify-center text-xl">
+                            +
+                        </div>
 
-                        <p class="text-sm text-gray-500 mt-1">
-                            Voir mes comptes
+
+                        <p class="font-semibold text-sm text-gray-900 dark:text-white mt-3">
+                            Transaction
                         </p>
 
                     </a>
 
 
-                    {{-- Récurrences --}}
-                    <a
-                        href="{{ route('recurring-transactions.index') }}"
-                        class="bg-white dark:bg-gray-800 rounded-xl shadow p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-                    >
+                    {{-- Virement --}}
 
-                        <p class="font-semibold text-gray-900 dark:text-white">
-                            🔄 Récurrences
-                        </p>
-
-                        <p class="text-sm text-gray-500 mt-1">
-                            Revenus et dépenses
-                        </p>
-
-                    </a>
-
-
-                    {{-- Objectifs --}}
-                    <a
-                        href="{{ route('savings-goals.index') }}"
-                        class="bg-white dark:bg-gray-800 rounded-xl shadow p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-                    >
-
-                        <p class="font-semibold text-gray-900 dark:text-white">
-                            🎯 Objectifs
-                        </p>
-
-                        <p class="text-sm text-gray-500 mt-1">
-                            Suivre mon épargne
-                        </p>
-
-                    </a>
-
-
-                    {{-- Catégories --}}
-                    <a
-                        href="{{ route('categories.index') }}"
-                        class="bg-white dark:bg-gray-800 rounded-xl shadow p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-                    >
-
-                        <p class="font-semibold text-gray-900 dark:text-white">
-                            🏷️ Catégories
-                        </p>
-
-                        <p class="text-sm text-gray-500 mt-1">
-                            Personnaliser mes catégories
-                        </p>
-
-                    </a>
-
-
-                    {{-- Transfert --}}
                     <a
                         href="{{ route('transfers.create') }}"
-                        class="bg-white dark:bg-gray-800 rounded-xl shadow p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                        class="mf-card mf-card-hover p-4 text-center"
                     >
 
-                        <p class="font-semibold text-gray-900 dark:text-white">
-                            ↔️ Transfert
-                        </p>
+                        <div class="w-10 h-10 mx-auto rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-lg">
+                            ↔
+                        </div>
 
-                        <p class="text-sm text-gray-500 mt-1">
-                            Déplacer de l'argent
+
+                        <p class="font-semibold text-sm text-gray-900 dark:text-white mt-3">
+                            Virement
                         </p>
 
                     </a>
 
+
+                    {{-- Objectif --}}
+
+                    <a
+                        href="{{ route('savings-goals.create') }}"
+                        class="mf-card mf-card-hover p-4 text-center"
+                    >
+
+                        <div class="w-10 h-10 mx-auto rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-lg">
+                            🎯
+                        </div>
+
+
+                        <p class="font-semibold text-sm text-gray-900 dark:text-white mt-3">
+                            Objectif
+                        </p>
+
+                    </a>
+
+
+                    {{-- Récurrence --}}
+
+                    <a
+                        href="{{ route('recurring-transactions.create') }}"
+                        class="mf-card mf-card-hover p-4 text-center"
+                    >
+
+                        <div class="w-10 h-10 mx-auto rounded-xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-lg">
+                            🔄
+                        </div>
+
+
+                        <p class="font-semibold text-sm text-gray-900 dark:text-white mt-3">
+                            Récurrence
+                        </p>
+
+                    </a>
 
                 </div>
 
-            </div>
+            </section>
 
 
         </div>
@@ -657,3 +928,4 @@
     </div>
 
 </x-app-layout>
+

@@ -18,12 +18,6 @@ class DashboardController extends Controller
             ->orderBy('name')
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Analyse des comptes
-        |--------------------------------------------------------------------------
-        */
-
         $accountForecasts = $accounts->map(function ($account) use (
             $forecastService,
             $analysisService
@@ -37,57 +31,57 @@ class DashboardController extends Controller
             $forecastBalance = $forecastService
                 ->forecastAccountBalance($account);
 
+            $monthlyIncome = $analysisService
+                ->monthlyIncomeTotal($account);
+
             $monthlyExpenses = $analysisService
                 ->monthlyExpenseTotal($account);
 
             return [
                 'account' => $account,
 
+                // Solde réellement disponible maintenant
                 'real_balance' => (float) $account->balance,
 
-                'upcoming_income' => $upcomingIncome,
+                // Revenus / dépenses réellement enregistrés ce mois
+                'monthly_income' => $monthlyIncome,
+                'monthly_expenses' => $monthlyExpenses,
 
+                // Mouvements récurrents à venir
+                'upcoming_income' => $upcomingIncome,
                 'upcoming_expenses' => $upcomingExpenses,
 
+                // Prévision de fin de mois
                 'forecast_balance' => $forecastBalance,
-
-                'monthly_expenses' => $monthlyExpenses,
             ];
         });
 
+        // =========================================================
+        // TOTAUX GLOBAUX
+        // =========================================================
 
-        /*
-        |--------------------------------------------------------------------------
-        | Vue globale
-        |--------------------------------------------------------------------------
-        */
+        $totalRealBalance = $accountForecasts
+            ->sum('real_balance');
 
-        $totalRealBalance = $accountForecasts->sum(
-            'real_balance'
-        );
+        $totalMonthlyIncome = $accountForecasts
+            ->sum('monthly_income');
 
-        $totalUpcomingIncome = $accountForecasts->sum(
-            'upcoming_income'
-        );
+        $totalMonthlyExpenses = $accountForecasts
+            ->sum('monthly_expenses');
 
-        $totalUpcomingExpenses = $accountForecasts->sum(
-            'upcoming_expenses'
-        );
+        $totalUpcomingIncome = $accountForecasts
+            ->sum('upcoming_income');
 
-        $totalForecastBalance = $accountForecasts->sum(
-            'forecast_balance'
-        );
+        $totalUpcomingExpenses = $accountForecasts
+            ->sum('upcoming_expenses');
 
-        $totalMonthlyExpenses = $accountForecasts->sum(
-            'monthly_expenses'
-        );
+        $totalForecastBalance = $accountForecasts
+            ->sum('forecast_balance');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Objectifs d'épargne
-        |--------------------------------------------------------------------------
-        */
+        // =========================================================
+        // OBJECTIFS D'ÉPARGNE
+        // =========================================================
 
         $savingsGoals = $user->savingsGoals()
             ->with('contributions')
@@ -115,33 +109,34 @@ class DashboardController extends Controller
 
                 return [
                     'goal' => $goal,
-
                     'current_amount' => $currentAmount,
-
                     'target_amount' => $targetAmount,
-
                     'percentage' => $percentage,
                 ];
             });
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Dashboard
-        |--------------------------------------------------------------------------
-        */
-
         return view('dashboard', [
+
             'accounts' => $accounts,
+
             'accountForecasts' => $accountForecasts,
 
             'totalRealBalance' => $totalRealBalance,
-            'totalUpcomingIncome' => $totalUpcomingIncome,
-            'totalUpcomingExpenses' => $totalUpcomingExpenses,
-            'totalForecastBalance' => $totalForecastBalance,
+
+            'totalMonthlyIncome' => $totalMonthlyIncome,
+
             'totalMonthlyExpenses' => $totalMonthlyExpenses,
 
+            'totalUpcomingIncome' => $totalUpcomingIncome,
+
+            'totalUpcomingExpenses' => $totalUpcomingExpenses,
+
+            'totalForecastBalance' => $totalForecastBalance,
+
             'savingsGoals' => $savingsGoals,
+
         ]);
     }
 }
+
