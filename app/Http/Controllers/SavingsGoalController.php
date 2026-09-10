@@ -64,10 +64,17 @@ class SavingsGoalController extends Controller
             'target_date' => ['nullable', 'date'],
         ]);
 
+        $currentAmount = (float) $savingsGoal
+        ->contributions()
+        ->sum('amount');
+
+        $isCompleted = $currentAmount >= (float) $validated['target_amount'];
+
         $savingsGoal->update([
             'name' => $validated['name'],
             'target_amount' => $validated['target_amount'],
             'target_date' => $validated['target_date'] ?? null,
+            'is_completed' => $isCompleted,
         ]);
 
         return redirect()
