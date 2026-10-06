@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: moneyflow-php
+    env_file:
+      - .env
+    volumes:
+      - moneyflow-storage:/app/storage
+      - moneyflow-database:/app/database
+      - moneyflow-public:/app/public
+
+  nginx:
+    image: nginx:alpine
+    container_name: moneyflow-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - moneyflow-public:/app/public:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+
+volumes:
+  moneyflow-storage:
+  moneyflow-database:
+  moneyflow-public:
