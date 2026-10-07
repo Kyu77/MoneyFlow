@@ -1,0 +1,11 @@
+app:
+  image: moneyflow-app:latest
+  replicas: 1
+  existingSecret: moneyflow-env
+
+nginx:
+  image: nginx:alpine
+  replicas: 1
+  service:
+    type: ClusterIP
+    port: 80

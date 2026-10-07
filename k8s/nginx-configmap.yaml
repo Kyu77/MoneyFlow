@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: moneyflow-nginx-config
+data:
+  default.conf: |
+    server {
+        listen 80;
+        server_name _;
+
+        root /usr/share/nginx/html;
+        index index.php index.html;
+
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            try_files $uri =404;
+
+            fastcgi_pass moneyflow-app:9000;
+            fastcgi_index index.php;
+
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME /app/public$fastcgi_script_name;
+        }
+    }

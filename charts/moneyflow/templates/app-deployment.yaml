@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moneyflow-app
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: moneyflow-app
+  template:
+    metadata:
+      labels:
+        app: moneyflow-app
+    spec:
+      containers:
+        - name: app
+          image: {{ .Values.app.image }}
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: {{ .Values.app.existingSecret }}
+          ports:
+            - containerPort: 9000
