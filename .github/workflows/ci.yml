@@ -31,9 +31,6 @@ jobs:
           touch database/database.sqlite
           php artisan migrate --force
 
-      - name: Lancer les tests
-        run: php artisan test
-
       - name: Installer Node.js
         uses: actions/setup-node@v4
         with:
@@ -45,6 +42,9 @@ jobs:
 
       - name: Compiler les assets
         run: npm run build
+
+      - name: Lancer les tests
+        run: php artisan test
 
   docker:
     runs-on: ubuntu-latest
